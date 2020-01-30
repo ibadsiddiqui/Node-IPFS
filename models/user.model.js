@@ -1,11 +1,8 @@
 const Joi = require('@hapi/joi')
-// NOTE: Install bcrypt then uncomment the line below
-// let bcrypt = require('bcryptjs')
+let bcrypt = require('bcryptjs')
 const RestHapi = require('rest-hapi')
 
-// TODO: assign a unique text index to email field
-
-module.exports = function(mongoose) {
+module.exports = function (mongoose) {
   const modelName = 'user'
   const Types = mongoose.Schema.Types
   const Schema = new mongoose.Schema({
@@ -19,19 +16,20 @@ module.exports = function(mongoose) {
       exclude: true,
       allowOnUpdate: false
     },
-    firstName: {
-      type: Types.String
-    },
-    lastName: {
-      type: Types.String
-    },
-    role: {
-      type: Types.ObjectId,
+    firstName: { type: Types.String },
+    lastName: { type: Types.String },
+    cnic: { type: Types.String },
+    contactNumber: { type: Types.String },
+    profileImage: { type: Types.String },
+    country: { type: Types.String },
+    _role: {
+      type: Types.String,
       ref: 'role',
-      required: true
+      required: true,
+      field: '_role',
     }
-  })
-
+  }, { strict: false })
+  const SchemaForPopulation = Schema;
   Schema.statics = {
     collectionName: modelName,
     routeOptions: {
@@ -40,21 +38,10 @@ module.exports = function(mongoose) {
           type: 'MANY_ONE',
           model: 'role'
         },
-        groups: {
-          type: 'MANY_MANY',
-          alias: 'group',
-          model: 'group'
-        },
-        permissions: {
-          type: 'MANY_MANY',
-          alias: 'permission',
-          model: 'permission',
-          linkingModel: 'user_permission'
-        }
       },
       extraEndpoints: [
         // Password Update Endpoint
-        function(server, model, options, logger) {
+        function (server, model, options, logger) {
           const Log = logger.bind('Password Update')
           const Boom = require('@hapi/boom')
 
@@ -62,7 +49,7 @@ module.exports = function(mongoose) {
 
           Log.note('Generating Password Update endpoint for ' + collectionName)
 
-          const handler = async function(request, h) {
+          const handler = async function (request, h) {
             try {
               const hashedPassword = model.generatePasswordHash(
                 request.payload.password
@@ -112,23 +99,40 @@ module.exports = function(mongoose) {
         }
       ],
       create: {
-        pre: function(payload, logger) {
+        pre: async function (payload, logger) {
           const hashedPassword = mongoose
             .model('user')
-            .generatePasswordHash(payload.password)
+            .generatePasswordHash(payload.password);
 
-          payload.password = hashedPassword
-
+          payload.password = hashedPassword;
           return payload
-        }
-      }
+        },
+        // post: async function (data) {
+        //   console.log(data);
+
+        //   const User = mongoose.model("user", SchemaForPopulation);
+        //   await User.findByID(data._id.toString(), async (err, user) => {
+        //     console.log(err);
+
+        //     var opts = [{ path: '_role' }];
+
+        //     await User.populate(user, opts, function (err, user) {
+        //       console.log(user);
+        //       return;
+        //     });
+
+        //   });
+        // const Users = await User.find({});
+        // console.log(Users);
+        // return;
+        // .populate("role").exec();
+        // }
+      },
     },
 
-    generatePasswordHash: function(password) {
-      const hash = password
-      // NOTE: Uncomment these two lines once bcrypt is installed
-      // let salt = bcrypt.genSaltSync(10)
-      // hash = bcrypt.hashSync(password, salt)
+    generatePasswordHash: function (password) {
+      let salt = bcrypt.genSaltSync(10)
+      const hash = bcrypt.hashSync(password, salt)
       return hash
     }
   }
