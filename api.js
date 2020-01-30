@@ -2,7 +2,7 @@ let Hapi = require('@hapi/hapi')
 let mongoose = require('mongoose')
 let RestHapi = require('rest-hapi')
 
-async function api () {
+async function api() {
   try {
 
     let server = Hapi.Server({
@@ -24,7 +24,7 @@ async function api () {
       docExpansion: 'list',
       swaggerHost: 'localhost:8080',
       mongo: {
-        URI: 'mongodb://localhost:27017/rest_hapi',
+        URI: 'mongodb://localhost:27017/secure-storage-ipfs',
       },
     }
 
