@@ -18,7 +18,7 @@ async function api() {
     })
 
     let config = {
-      appTitle: 'rest-hapi-demo',
+      appTitle: 'Secure Storage IPFS',
       enableTextSearch: true,
       logRoutes: true,
       docExpansion: 'list',

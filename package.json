@@ -1,5 +1,5 @@
 {
-  "name": "rest-hapi-demo",
+  "name": "secure-storage-ipfs",
   "version": "1.0.0",
   "description": "A simple demonstration of the rest-hapi plugin.",
   "main": "api.js",
