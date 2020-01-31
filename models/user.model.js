@@ -100,11 +100,12 @@ module.exports = function (mongoose) {
       ],
       create: {
         pre: async function (payload, logger) {
+          const IPFS = require("ipfs");
           const hashedPassword = mongoose
-            .model('user')
-            .generatePasswordHash(payload.password);
+            .model('user').generatePasswordHash(payload.password);
 
           payload.password = hashedPassword;
+
           return payload
         },
         // post: async function (data) {
