@@ -16,11 +16,10 @@ module.exports = function (server, model, options, logger) {
                 params: {
                     _id: RestHapi.joiHelper.joiObjectId().required()
                 },
-                payload: {
-                    password: Joi.string()
-                        .required()
+                payload: Joi.object({
+                    password: Joi.string().required()
                         .description("The user's new password")
-                }
+                })
             },
             plugins: {
                 'hapi-swagger': {

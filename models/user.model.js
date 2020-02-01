@@ -1,5 +1,5 @@
 let bcrypt = require('bcryptjs')
-// const UpdatePassword = require('./../api/users/update_password')
+const UpdatePassword = require('./../api/users/update_password')
 const UserLogin = require('./../api/users/login')
 // const IPFS = require("ipfs");
 const PeerId = require('peer-id');
