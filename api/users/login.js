@@ -1,6 +1,4 @@
 const Joi = require('@hapi/joi')
-// const RestHapi = require('rest-hapi')
-
 const LoginHandler = require('../../handlers/user/login.handler');
 
 module.exports = function (server, model, options, logger) {
@@ -8,7 +6,7 @@ module.exports = function (server, model, options, logger) {
         method: 'POST',
         path: '/user/login',
         config: {
-            handler: (req, h) => LoginHandler(req, h, model, logger),
+            handler: (req, h) => LoginHandler(req, server, model, logger),
             auth: null,
             description: "Authorize User to Login in to the APp.",
             tags: ['api', 'User', 'Login'],

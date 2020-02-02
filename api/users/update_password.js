@@ -8,7 +8,8 @@ module.exports = function (server, model, options, logger) {
         method: 'PUT',
         path: '/user/{_id}/password',
         config: {
-            handler: (req, h) => updatePasswordHandler(req, h, model, logger),
+            handler: (req, h) => { },
+            // updatePasswordHandler(req, h, model, logger),
             auth: null,
             description: "Update a user's password.",
             tags: ['api', 'User', 'Password'],
@@ -16,10 +17,10 @@ module.exports = function (server, model, options, logger) {
                 params: {
                     _id: RestHapi.joiHelper.joiObjectId().required()
                 },
-                payload: Joi.object({
-                    password: Joi.string().required()
-                        .description("The user's new password")
-                })
+                // payload: Joi.object({
+                //     password: Joi.string().required()
+                //         .description("The user's new password")
+                // })
             },
             plugins: {
                 'hapi-swagger': {
