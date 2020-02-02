@@ -5,7 +5,7 @@ module.exports = async function (request, h, model, logger) {
     const Log = logger.bind('Password Update')
     const collectionName = model.collectionDisplayName || model.modelName
 
-    const User = mongoose.model("user");
+    const User = model("user");
 
     Log.note('Generating Password Update endpoint for ' + collectionName)
     try {
@@ -34,28 +34,3 @@ module.exports = async function (request, h, model, logger) {
         throw Boom.badImplementation(err)
     }
 }
-// const loginHandler = async function (request, h) {
-// let token = "";
-// let response = {};
-
-// let user = await User.findByCredentials(
-//     request.payload.email,
-//     request.payload.password,
-//     Log
-// );
-
-// if (!user) {
-//     throw Boom.unauthorized("Invalid Email or Password.");
-// }
-
-// delete user.password;
-
-// token = server.methods.createToken(user);
-
-// response = {
-//     user,
-//     token
-// };
-
-// return response;
-// };
