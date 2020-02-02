@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JKHeadley/rest-hapi-demo.git"
+    "url": "git+https://github.com/ibadsiddiqui/Node-IPFS.git"
   },
   "keywords": [
     "rest-hapi"
   ],
-  "author": "Justin Headley",
+  "author": "Ibad Siddiqui",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JKHeadley/rest-hapi-demo/issues"
+    "url": "https://github.com/ibadsiddiqui/Node-IPFS/issues"
   },
-  "homepage": "https://github.com/JKHeadley/rest-hapi-demo#readme",
+  "homepage": "https://github.com/ibadsiddiqui/Node-IPFS#readme",
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "ipfs": "^0.40.0",

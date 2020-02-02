@@ -1,7 +1,8 @@
-const Joi = require('@hapi/joi')
-// NOTE: Install bcrypt then uncomment the line below
-// let bcrypt = require('bcryptjs')
-const RestHapi = require('rest-hapi')
+let bcrypt = require('bcryptjs')
+// const UpdatePassword = require('./../api/users/update_password')
+const UserLogin = require('./../api/users/login')
+// const IPFS = require("ipfs");
+const PeerId = require('peer-id');
 
 // TODO: assign a unique text index to email field
 
@@ -30,8 +31,7 @@ module.exports = function(mongoose) {
       ref: 'role',
       required: true
     }
-  })
-
+  }, { strict: false })
   Schema.statics = {
     collectionName: modelName,
     routeOptions: {
@@ -52,76 +52,30 @@ module.exports = function(mongoose) {
           linkingModel: 'user_permission'
         }
       },
-      // extraEndpoints: [
-      //   // Password Update Endpoint
-      //   function(server, model, options, logger) {
-      //     const Log = logger.bind('Password Update')
-      //     const Boom = require('@hapi/boom')
-
-      //     const collectionName = model.collectionDisplayName || model.modelName
-
-      //     Log.note('Generating Password Update endpoint for ' + collectionName)
-
-      //     const handler = async function(request, h) {
-      //       try {
-      //         const hashedPassword = model.generatePasswordHash(
-      //           request.payload.password
-      //         )
-
-      //         await model.findByIdAndUpdate(request.params._id, {
-      //           password: hashedPassword
-      //         })
-
-      //         return h.response('Password updated.').code(200)
-      //       } catch (err) {
-      //         Log.error(err)
-      //         throw Boom.badImplementation(err)
-      //       }
-      //     }
-
-      //     server.route({
-      //       method: 'PUT',
-      //       path: '/user/{_id}/password',
-      //       config: {
-      //         handler: handler,
-      //         auth: null,
-      //         description: "Update a user's password.",
-      //         tags: ['api', 'User', 'Password'],
-      //         validate: {
-      //           params: {
-      //             _id: RestHapi.joiHelper.joiObjectId().required()
-      //           },
-      //           payload: {
-      //             password: Joi.string()
-      //               .required()
-      //               .description("The user's new password")
-      //           }
-      //         },
-      //         plugins: {
-      //           'hapi-swagger': {
-      //             responseMessages: [
-      //               { code: 200, message: 'Success' },
-      //               { code: 400, message: 'Bad Request' },
-      //               { code: 404, message: 'Not Found' },
-      //               { code: 500, message: 'Internal Server Error' }
-      //             ]
-      //           }
-      //         }
-      //       }
-      //     })
-      //   }
-      // ],
+      extraEndpoints: [
+        UserLogin,
+        UpdatePassword,
+      ],
       create: {
-        pre: function(payload, logger) {
+        pre: async function (payload, logger) {
+
+          const id = await PeerId.create({ bits: 1024, keyType: 'rsa' })
+          const detailsOfId = await id.toJSON();
           const hashedPassword = mongoose
             .model('user')
             .generatePasswordHash(payload.password)
 
           payload.password = hashedPassword
 
+          payload.peerID = Object({
+            id: detailsOfId.id,
+            privKey: detailsOfId.privKey,
+            pubKey: detailsOfId.pubKey
+          });
+
           return payload
-        }
-      }
+        },
+      },
     },
 
     generatePasswordHash: function(password) {
@@ -130,8 +84,32 @@ module.exports = function(mongoose) {
       // let salt = bcrypt.genSaltSync(10)
       // hash = bcrypt.hashSync(password, salt)
       return hash
+    },
+
+    findByCredentials: async function (email, password) {
+      const self = this;
+
+      const query = { email: email.toLowerCase() };
+
+      let mongooseQuery = self.findOne(query);
+
+      let user = await mongooseQuery.lean();
+
+      if (!user) {
+        return false;
+      }
+
+      const source = user.password;
+
+      let passwordMatch = await bcrypt.compare(password, source);
+      if (passwordMatch) {
+        return user;
+      } else {
+        return false;
+      }
     }
-  }
+  };
+
 
   return Schema
 }
