@@ -49,10 +49,9 @@ module.exports = function (mongoose) {
 
           const id = await PeerId.create({ bits: 1024, keyType: 'rsa' })
           const detailsOfId = await id.toJSON();
-          const hashedPassword = mongoose
-            .model('user').generatePasswordHash(payload.password);
+          const hashedPassword = mongoose.model('user').generatePasswordHash(payload.password);
 
-          payload.password = hashedPassword;
+        payload.password = hashedPassword;
 
           payload.peerID = Object({
             id: detailsOfId.id,
@@ -80,18 +79,13 @@ module.exports = function (mongoose) {
 
       let user = await mongooseQuery.lean();
 
-      if (!user) {
-        return false;
-      }
+      if (!user) return false;
 
       const source = user.password;
 
       let passwordMatch = await bcrypt.compare(password, source);
-      if (passwordMatch) {
-        return user;
-      } else {
-        return false;
-      }
+      if (passwordMatch) return user;
+      else return false;
     }
   };
 
