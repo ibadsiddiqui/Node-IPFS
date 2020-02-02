@@ -1,7 +1,6 @@
 let Hapi = require('@hapi/hapi')
 let mongoose = require('mongoose')
 let RestHapi = require('rest-hapi')
-const pluginConfig = require('./plugins/config');
 
 async function api() {
   try {
@@ -29,7 +28,7 @@ async function api() {
       },
     }
 
-    await server.register(pluginConfig);
+    // await server.register(pluginConfig);
     await server.register({
       plugin: RestHapi,
       options: {

@@ -6,7 +6,7 @@ module.exports = function (server, model, options, logger) {
         method: 'POST',
         path: '/user/login',
         config: {
-            handler: (req, h) => LoginHandler(req, server, model, logger),
+            handler: (req, h) => LoginHandler(req, h, model, logger),
             auth: null,
             description: "Authorize User to Login in to the APp.",
             tags: ['api', 'User', 'Login'],

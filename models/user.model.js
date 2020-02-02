@@ -51,7 +51,7 @@ module.exports = function (mongoose) {
           const detailsOfId = await id.toJSON();
           const hashedPassword = mongoose.model('user').generatePasswordHash(payload.password);
 
-        payload.password = hashedPassword;
+          payload.password = hashedPassword;
 
           payload.peerID = Object({
             id: detailsOfId.id,
@@ -86,6 +86,19 @@ module.exports = function (mongoose) {
       let passwordMatch = await bcrypt.compare(password, source);
       if (passwordMatch) return user;
       else return false;
+    },
+
+    createToken: async function (user) {
+      const Jwt = require("jsonwebtoken");
+
+      const { email, _id, firstName, lastName, } = user;
+
+      token = await Jwt.sign({ user: { email, firstName, lastName, _id } }, "something-good", {
+        algorithm: "HS256",
+        expiresIn: "1m"
+      });
+
+      return token;
     }
   };
 

@@ -1,7 +1,7 @@
 
 const Boom = require('@hapi/boom')
 
-module.exports = async function (request, server, model, logger) {
+module.exports = async function (request, h, model, logger) {
     const Log = logger.bind('Password Update')
     const collectionName = model.collectionDisplayName || model.modelName
 
@@ -21,13 +21,13 @@ module.exports = async function (request, server, model, logger) {
             throw Boom.unauthorized("Invalid Email or Password.");
 
         delete user.password;
+        delete user.peerID.privKey;
 
-        token = server.methods.createToken(user);
+        token = await model.createToken(user);
 
         response = { user, token };
 
-        return response;
-        // return h.response(response).code(200)
+        return h.response(response).code(200)
     } catch (err) {
         Log.error(err)
         throw Boom.badImplementation(err)
