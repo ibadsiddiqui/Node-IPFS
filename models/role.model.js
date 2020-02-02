@@ -5,7 +5,7 @@ module.exports = function(mongoose) {
     {
       name: {
         type: Types.String,
-        enum: ['Seller', 'Buyer'],
+        enum: ['Account', 'Admin', 'SuperAdmin'],
         required: true
       },
       description: {

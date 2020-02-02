@@ -15,7 +15,7 @@ module.exports = function (server, model, options, logger) {
             validate: {
                 payload: Joi.object({
                     email: Joi.string().email(),
-                    password: Joi.string()  
+                    password: Joi.string()
                 }),
             },
             plugins: {
