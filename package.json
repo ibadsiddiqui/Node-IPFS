@@ -22,7 +22,9 @@
   "homepage": "https://github.com/ibadsiddiqui/Node-IPFS#readme",
   "dependencies": {
     "bcryptjs": "^2.4.0",
+    "hapi-auth-jwt2": "^8.8.1",
     "ipfs": "^0.40.0",
+    "jsonwebtoken": "^8.5.1",
     "peer-id": "^0.13.7",
     "rest-hapi": "latest"
   }
