@@ -1,4 +1,3 @@
-const Joi = require('@hapi/joi')
 const LoginHandler = require('../../handlers/user/login.handler');
 
 module.exports = function (server, model, options, logger) {
@@ -11,10 +10,10 @@ module.exports = function (server, model, options, logger) {
             description: "Authorize User to Login in to the APp.",
             tags: ['api', 'User', 'Login'],
             validate: {
-                payload: Joi.object({
-                    email: Joi.string().email(),
-                    password: Joi.string()
-                }),
+                payload: {
+                    email: "",
+                    password: ""
+                },
             },
             plugins: {
                 'hapi-swagger': {

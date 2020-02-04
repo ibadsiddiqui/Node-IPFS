@@ -39,6 +39,17 @@ module.exports = function (mongoose) {
           type: 'MANY_ONE',
           model: 'role'
         },
+        // groups: {
+        //   type: 'MANY_MANY',
+        //   alias: 'group',
+        //   model: 'group'
+        // },
+        // permissions: {
+        //   type: 'MANY_MANY',
+        //   alias: 'permission',
+        //   model: 'permission',
+        //   linkingModel: 'user_permission'
+        // }
       },
       extraEndpoints: [
         UserLogin,
