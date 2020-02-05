@@ -1,14 +1,11 @@
 const IPFS = require("ipfs");
 
-
 module.exports = function (mongoose) {
-    const modelName = 'files'
+    const modelName = 'ipfs'
     const Types = mongoose.Schema.Types
 
     const Schema = new mongoose.Schema({
-        path: { type: Types.String },
-        mode: { type: Types.String },
-        mtime: { type: Types.Date, default: Date.now },
+        file: Array([]),
         content: {
             type: Types.String,
             required: true,
@@ -19,7 +16,7 @@ module.exports = function (mongoose) {
             required: true,
             field: 'userID',
         }
-    })
+    }, { strict: false })
     Schema.statics = {
         collectionName: modelName,
         routeOptions: {
