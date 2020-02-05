@@ -7,9 +7,7 @@ module.exports = function (server, model, options, logger) {
         method: 'PUT',
         path: '/user/{_id}/password',
         config: {
-            handler: (req, h) =>
-                // { },
-                updatePasswordHandler(req, h, model, logger),
+            handler: (req, h) => updatePasswordHandler(req, h, model, logger),
             auth: null,
             description: "Update a user's password.",
             tags: ['api', 'User', 'Password'],
