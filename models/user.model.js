@@ -1,7 +1,8 @@
 let bcrypt = require('bcryptjs')
 const UpdatePassword = require('./../api/users/update_password')
 const UserLogin = require('./../api/users/login')
-// const IPFS = require("ipfs");
+// const UserUploadFile = require('./../api/users/upload_file')
+
 const PeerId = require('peer-id');
 
 module.exports = function (mongoose) {
@@ -39,21 +40,11 @@ module.exports = function (mongoose) {
           type: 'MANY_ONE',
           model: 'role'
         },
-        // groups: {
-        //   type: 'MANY_MANY',
-        //   alias: 'group',
-        //   model: 'group'
-        // },
-        // permissions: {
-        //   type: 'MANY_MANY',
-        //   alias: 'permission',
-        //   model: 'permission',
-        //   linkingModel: 'user_permission'
-        // }
       },
       extraEndpoints: [
         UserLogin,
         UpdatePassword,
+        // UserUploadFile,
       ],
       create: {
         pre: async function (payload, logger) {
