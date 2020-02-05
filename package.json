@@ -22,10 +22,13 @@
   "homepage": "https://github.com/ibadsiddiqui/Node-IPFS#readme",
   "dependencies": {
     "bcryptjs": "^2.4.0",
+    "bl": "^4.0.0",
+    "fs": "^0.0.1-security",
     "hapi-auth-jwt2": "^8.8.1",
     "ipfs": "^0.40.0",
     "jsonwebtoken": "^8.5.1",
     "peer-id": "^0.13.7",
-    "rest-hapi": "latest"
+    "rest-hapi": "latest",
+    "uuid": "^3.4.0"
   }
 }
