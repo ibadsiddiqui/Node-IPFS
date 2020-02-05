@@ -6,7 +6,7 @@ async function api() {
   try {
 
     let server = Hapi.Server({
-      port: 8080,
+      port: 9000,
       routes: {
         validate: {
           failAction: async (request, h, err) => {
