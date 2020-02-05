@@ -9,12 +9,12 @@ module.exports = function (server, model, options, logger) {
             auth: null,
             description: "Authorize User to Login in to the APp.",
             tags: ['api', 'User', 'Login'],
-            validate: {
-                payload: {
-                    email: "",
-                    password: ""
-                },
-            },
+            // validate: {
+                // payload: {
+                //     email: "",
+                //     password: ""
+                // },
+            // },
             plugins: {
                 'hapi-swagger': {
                     responseMessages: [

@@ -36,31 +36,35 @@ module.exports = function (server, model, options, logger) {
 
 async function HandleUploadFile(request, h, model, logger) {
     // const Log = logger.bind('Upload File')
-    const collectionName = model.collectionDisplayName || model.modelName
     const { payload } = request;
     // Log.note('Generating Password Update endpoint for ' + collectionName)
 
     const node = await IPFS.create()
 
+    let fileData = {
+        path: '/',
+        content: payload.file
+    }
+
+
     try {
-        const files = await node.add(payload)
+        const files = await node.add(fileData)
         await node.stop();
-        //   const id = await PeerId.create({ bits: 1024, keyType: 'rsa' })
-        //   const detailsOfId = await id.toJSON();
-        //   const hashedPassword = mongoose.model('user').generatePasswordHash(payload.password);
-
-        //   payload.password = hashedPassword;
-
-        //   payload.peerID = Object({
-        //     id: detailsOfId.id,
-        //     privKey: detailsOfId.privKey,
-        //     pubKey: detailsOfId.pubKey
-        //   });
-
-        // return files
-        return h.response(files).code(200)
+        let data = {
+            file: files[0],
+            path: '/',
+            userID: payload.userID,
+            isShared: false,
+            sharedTo: [],
+        }
+        let response
+        await model.models.ipfs.create(data, (err,res) => {
+            if(err) throw err;
+            response = res;
+        })
+        return h.response(response).code(200)
     } catch (err) {
-        node.stop
+        await node.stop()
         Log.error(err)
         throw Boom.badImplementation(err)
     }
